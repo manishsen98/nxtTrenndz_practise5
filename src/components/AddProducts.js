@@ -39,7 +39,7 @@ const onSubmit = async (e) => {
     const {title, brand, price, image, rating} = values
     const userDetails = {title, brand, price, image, rating}
     console.log(title, brand, price, image,  rating)
-    axios.post("http://localhost:5000/imagesadd", userDetails , {
+    axios.post("http://localhost:5000/api/addproductd", userDetails , {
       
       // headers: {
       //   'Content-Type': 'application/json ',
