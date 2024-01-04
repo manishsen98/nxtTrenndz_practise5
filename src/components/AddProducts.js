@@ -25,34 +25,37 @@ const AddProducts = () => {
     setValues({...values, price: e.target.value })
   }
 
-  const onChangeImg = (e) => {
-    setValues({...values, image: e.target.value })
+  const onChangeImg = (img) => {
+    setValues({...values, image: img })
   }
 
   const onChangerating = (e) => {
     setValues({...values, rating: e.target.value })
   }                  
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-const onSubmit = async (e) => {
-    e.preventDefault()
+    const { title, brand, price, image, rating } = values;
 
-    const {title, brand, price, image, rating} = values
-    const userDetails = {title, brand, price, image, rating}
-    console.log(title, brand, price, image,  rating)
-    axios.post("http://localhost:5000/api/addproductd", userDetails , {
-      
-      // headers: {
-      //   'Content-Type': 'application/json ',
-      // }
-    })
-    .then((res) => {
-      console.log("ghdhdgfdfggdghfgdgfdgfghdfghd")
-      console.log(res)
-    }).catch((error) => {
-      console.log(error)
-    })
-    
-}
+    // Create a FormData object to handle file uploads
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('brand', brand);
+    formData.append('price', price);
+    formData.append('rating', rating);
+    formData.append('image', image); // Assuming `image` is a file input
+
+    try {
+        // Make a POST request using axios
+        const response = await axios.post("http://localhost:5000/image", formData);
+
+        // Handle the response
+        console.log("Response:", response.data);
+    } catch (error) {
+        // Handle errors
+        console.error("Error:", error);
+    }
+};
 
 
     return(
@@ -68,7 +71,9 @@ const onSubmit = async (e) => {
             <input  type="text" placeholder="rating"  onChange={onChangerating}  value={values.rating}  />
 
             <label>ImageUrl</label>
-            <input  type="file" placeholder="ImgUrl" name='image' onChange={onChangeImg}  value={values.image_url} />
+            <input type="file" name="image" onChange={(e) => onChangeImg(e.target.files[0])} />
+
+            {/* <input  type="file" placeholder="ImgUrl" name='image' onChange={onChangeImg}  value={values.image} /> */}
             <button className='button' type='submit'> submit  </button>
             </form>
         </div>
